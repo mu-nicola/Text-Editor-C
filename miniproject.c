@@ -8,7 +8,7 @@
 #define MAX_UNDO 5
 #define WORD_LEN 50
 
-/* ================= DATA STRUCTURES ================= */
+
 
 typedef struct WordNode {
     char word[WORD_LEN];
@@ -16,9 +16,9 @@ typedef struct WordNode {
 } WordNode;
 
 typedef struct Action {
-    int type;                  // INSERT or DELETE
-    char word[WORD_LEN];       // affected word
-    int position;              // position of action
+    int type;                  
+    char word[WORD_LEN];       
+    int position;              
 } Action;
 
 typedef struct StackNode {
@@ -26,14 +26,14 @@ typedef struct StackNode {
     struct StackNode *next;
 } StackNode;
 
-/* ================= GLOBAL STATE ================= */
+
 
 WordNode *textHead = NULL;
 StackNode *undoStack = NULL;
 StackNode *redoStack = NULL;
 int undoCount = 0;
 
-/* ================= UTILITY FUNCTIONS ================= */
+/
 
 int wordCount() {
     int count = 0;
@@ -61,10 +61,10 @@ void clearText() {
     }
 }
 
-/* ================= STACK OPERATIONS ================= */
+
 
 void push(StackNode **top, Action a, int *count) {
-    /* Enforce undo limit */
+    
     if (*count == MAX_UNDO) {
         StackNode *cur = *top, *prev = NULL;
         while (cur->next) {
@@ -96,7 +96,7 @@ int pop(StackNode **top, Action *a, int *count) {
     return 1;
 }
 
-/* ================= TEXT OPERATIONS ================= */
+
 
 void insertWordAt(char *word, int pos) {
     WordNode *n = (WordNode *)malloc(sizeof(WordNode));
@@ -158,7 +158,7 @@ void displayText() {
            wordCount(), undoCount, MAX_UNDO);
 }
 
-/* ================= UNDO / REDO ================= */
+
 
 void undo() {
     Action a;
@@ -194,7 +194,7 @@ void redo() {
     push(&undoStack, a, &undoCount);
 }
 
-/* ================= FILE OPERATIONS ================= */
+
 
 void saveToFile() {
     char fname[50];
@@ -240,7 +240,7 @@ void loadFromFile() {
     printf("File loaded. Undo history cleared.\n");
 }
 
-/* ================= MAIN ================= */
+
 
 int main() {
     char line[400];
@@ -274,15 +274,15 @@ int main() {
     while (1) {
         int ch = getchar();
 
-        if (ch == 26) {          // Ctrl+Z
+        if (ch == 26) {          
             undo();
             displayText();
         } 
-        else if (ch == 25) {     // Ctrl+Y
+        else if (ch == 25) {     
             redo();
             displayText();
         } 
-        else if (ch == 27) {     // ESC
+        else if (ch == 27) {     
             printf("\nExiting editor.\n");
             break;
         } 
@@ -300,3 +300,4 @@ int main() {
     clearStack(&redoStack);
     return 0;
 }
+
